@@ -1,0 +1,20 @@
+Checks: >
+  -*,
+  bugprone-*,
+  clang-analyzer-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-reserved-identifier,
+  -bugprone-narrowing-conversions,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -clang-diagnostic-error
+
+# bugprone-*: common bug patterns (null deref, integer overflow, etc.)
+# clang-analyzer-*: deep static analysis
+# Disabled:
+#   - reserved-identifier: we use _app_start, __initialize_hardware_early (linker symbols)
+#   - narrowing-conversions: too noisy for embedded (int->char is common)
+#   - DeprecatedOrUnsafeBufferHandling: we use custom memcpy/memset
+#   - clang-diagnostic-error: conflicting types with host libc (we have custom impl)
+
+WarningsAsErrors: ''
+HeaderFilterRegex: 'board/.*\.h$'
