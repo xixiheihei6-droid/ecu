@@ -144,7 +144,9 @@ static inline bool read_i2c_reg(I2C_HandleTypeDef *hi2c, uint8_t reg_addr, uint1
 
     uint8_t expected = calculate_checksum(read_buff, 2);
     if (read_buff[2] != expected) {
+        i2c_fail_streak++;
         i2c_connection_bad = true;
+        i2c_consider_reset(hi2c, HAL_I2C_GetError(hi2c));
         return false;
     }
 
