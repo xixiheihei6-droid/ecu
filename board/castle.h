@@ -90,8 +90,14 @@ extern volatile bool i2c_connection_bad;
 
 static inline void reset_i2c(I2C_HandleTypeDef *hi2c) {
     uart_printf("I2C bus error, resetting peripheral\n");
-    HAL_I2C_DeInit(hi2c);
-    HAL_I2C_Init(hi2c);
+    HAL_StatusTypeDef deinit_status = HAL_I2C_DeInit(hi2c);
+    HAL_StatusTypeDef init_status = HAL_I2C_Init(hi2c);
+
+    if (deinit_status != HAL_OK || init_status != HAL_OK) {
+        uart_printf("I2C reset failed: deinit=%d init=%d err=0x%08lx state=%d\n", (int)deinit_status, (int)init_status,
+                    HAL_I2C_GetError(hi2c), (int)HAL_I2C_GetState(hi2c));
+        i2c_connection_bad = true;
+    }
 }
 
 static inline void i2c_consider_reset(I2C_HandleTypeDef *hi2c, uint32_t err) {
