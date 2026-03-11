@@ -12,6 +12,9 @@ extern I2C_HandleTypeDef hi2c3;
 
 #define STEERING_CENTER 6000   // pulse ticks, 4800-7200 range
 #define THROTTLE_NEUTRAL 32767 // 16-bit midpoint for Castle ESC
+#define THROTTLE_INPUT_MIN -10000
+#define THROTTLE_INPUT_MAX 10000
+#define THROTTLE_INPUT_SPAN (THROTTLE_INPUT_MAX - THROTTLE_INPUT_MIN)
 
 #define CASTLE_I2C_ADDR 0x08
 #define CASTLE_I2C_TIMEOUT_MS 10
@@ -211,8 +214,16 @@ static inline uint32_t write_i2c_reg(I2C_HandleTypeDef *hi2c, uint8_t reg_addr, 
 // if throttle is in the neutral range, we snap to the edge of the neutral zone
 // center of neutral at 65535/2 = 32767, range 30767 to 34767
 static inline uint16_t convert_throttle(int16_t throttle) {
-    // Convert [-10000, 10000] to [0, 65535]
-    uint16_t desired_throttle = (uint16_t)(((int32_t)throttle + 10000) * 65535 / 20000);
+    // Clamp input to expected CAN contract range
+    if (throttle < THROTTLE_INPUT_MIN) {
+        throttle = THROTTLE_INPUT_MIN;
+    } else if (throttle > THROTTLE_INPUT_MAX) {
+        throttle = THROTTLE_INPUT_MAX;
+    }
+
+    // Convert [THROTTLE_INPUT_MIN, THROTTLE_INPUT_MAX] to [0, 65535]
+    uint16_t desired_throttle =
+        (uint16_t)(((int32_t)throttle - THROTTLE_INPUT_MIN) * 65535 / THROTTLE_INPUT_SPAN);
 
     // Define neutral range around center
     const uint16_t neutral_range = 2000;
