@@ -228,8 +228,7 @@ static inline uint16_t convert_throttle(int16_t throttle) {
     }
 
     // Convert [THROTTLE_INPUT_MIN, THROTTLE_INPUT_MAX] to [0, 65535]
-    uint16_t desired_throttle =
-        (uint16_t)(((int32_t)throttle - THROTTLE_INPUT_MIN) * 65535 / THROTTLE_INPUT_SPAN);
+    uint16_t desired_throttle = (uint16_t)(((int32_t)throttle - THROTTLE_INPUT_MIN) * 65535 / THROTTLE_INPUT_SPAN);
 
     // Snap to edge of neutral zone
     if (desired_throttle >= THROTTLE_NEUTRAL - THROTTLE_NEUTRAL_RANGE &&
