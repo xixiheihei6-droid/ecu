@@ -39,18 +39,17 @@ Reference build: [Arrma Typhon](https://www.arrma-rc.com/en/product/1-8-typhon-3
 
 ### ESC Setup
 
-Turbo ECU includes the Castle Serial Link connection used by firmware
-Before driving, you still must configure your Castle ESC with [Castle Link USB](https://www.castlecreations.com/en/castle-link-v3-usb-programming-kit-011-0119-00):
+Castle Link USB is used to flash/configure the **ESC**.  
+Castle Serial Link is a daughterboard on Turbo ECU and is the runtime **I2C** telemetry/control path used by firmware.
 
-1. Connect ESC to Castle Link USB
-2. Flash/update ESC firmware as needed
-3. Configure ESC/Serial Link settings:
-   - Enable Serial Link I2C mode
-   - Set I2C slave address to `0x08`
-   - Set I2C bus speed to `100kHz`
-   - For reversible/car ESC setups, set fail-safe output to neutral (50 = 1.5ms)
+Before driving:
 
-Castle Link USB is the ESC programming adapter. Castle Serial Link is the runtime telemetry/control link
+1. Connect the ESC to [Castle Link USB](https://www.castlecreations.com/en/castle-link-v3-usb-programming-kit-011-0119-00).
+2. Flash/update ESC firmware and apply required ESC settings.
+3. Confirm Turbo ECU Castle Serial Link runtime settings:
+   - I2C slave address: `0x08`
+   - I2C bus speed: `100kHz`
+   - For reversible/car ESC setups, fail-safe output at neutral (`50` = `1.5ms`)
 See [protocol spec](docs/castle_serial_link_protocol.md) for details
 
 
@@ -59,7 +58,7 @@ See [protocol spec](docs/castle_serial_link_protocol.md) for details
 | Interface | Protocol | Function |
 |-----------|----------|----------|
 | OBD-C | CAN | Steering/throttle in, speed out |
-| Castle ESC | I2C | Throttle control, telemetry |
+| Castle Serial Link (to ESC) | I2C | Throttle control, telemetry |
 | Steering | PWM | Direct servo control |
 | Headlights | GPIO | FET-switched |
 | Debug | UART | printf output |
