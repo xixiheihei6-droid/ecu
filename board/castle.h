@@ -12,9 +12,15 @@ extern I2C_HandleTypeDef hi2c3;
 
 #define STEERING_CENTER 6000   // pulse ticks, 4800-7200 range
 #define THROTTLE_NEUTRAL 32767 // 16-bit midpoint for Castle ESC
+
+#define STEERING_INPUT_MIN -18000
+#define STEERING_INPUT_MAX 18000
+#define STEERING_OUTPUT_DELTA 1200
+
 #define THROTTLE_INPUT_MIN -10000
 #define THROTTLE_INPUT_MAX 10000
 #define THROTTLE_INPUT_SPAN (THROTTLE_INPUT_MAX - THROTTLE_INPUT_MIN)
+#define THROTTLE_NEUTRAL_RANGE 2000
 
 #define CASTLE_I2C_ADDR 0x08
 #define CASTLE_I2C_TIMEOUT_MS 10
@@ -209,10 +215,10 @@ static inline uint32_t write_i2c_reg(I2C_HandleTypeDef *hi2c, uint8_t reg_addr, 
 
 /* CONTROLS */
 
-// convert_throttle converts throttle message of signed int16_t (-10000 to 10000)
-// to uint16_t (0 to 65535) for Castle ESC I2C message
-// if throttle is in the neutral range, we snap to the edge of the neutral zone
-// center of neutral at 65535/2 = 32767, range 30767 to 34767
+// convert_throttle maps signed throttle input (-10000..10000)
+// to Castle throttle register space (0..65535).
+// Inputs inside the neutral deadband are snapped to its edge:
+// neutral center 32767, deadband 30767..34767.
 static inline uint16_t convert_throttle(int16_t throttle) {
     // Clamp input to expected CAN contract range
     if (throttle < THROTTLE_INPUT_MIN) {
@@ -225,15 +231,13 @@ static inline uint16_t convert_throttle(int16_t throttle) {
     uint16_t desired_throttle =
         (uint16_t)(((int32_t)throttle - THROTTLE_INPUT_MIN) * 65535 / THROTTLE_INPUT_SPAN);
 
-    // Define neutral range around center
-    const uint16_t neutral_range = 2000;
-
     // Snap to edge of neutral zone
-    if (desired_throttle >= THROTTLE_NEUTRAL - neutral_range && desired_throttle <= THROTTLE_NEUTRAL + neutral_range) {
+    if (desired_throttle >= THROTTLE_NEUTRAL - THROTTLE_NEUTRAL_RANGE &&
+        desired_throttle <= THROTTLE_NEUTRAL + THROTTLE_NEUTRAL_RANGE) {
         if (throttle > 0) {
-            desired_throttle = THROTTLE_NEUTRAL + neutral_range; // bump up to 34767
+            desired_throttle = THROTTLE_NEUTRAL + THROTTLE_NEUTRAL_RANGE;
         } else if (throttle < 0) {
-            desired_throttle = THROTTLE_NEUTRAL - neutral_range; // bump down to 30767
+            desired_throttle = THROTTLE_NEUTRAL - THROTTLE_NEUTRAL_RANGE;
         } else {
             desired_throttle = THROTTLE_NEUTRAL; // throttle == 0: hold exactly at center
         }
@@ -242,16 +246,17 @@ static inline uint16_t convert_throttle(int16_t throttle) {
     return desired_throttle;
 }
 
-// convert_steering maps -18000 to +18000 input to 4800-7200 range
+// convert_steering maps steering input (-18000..18000) to PWM ticks (4800..7200).
+// Steering center is 6000 with +/-1200 output range.
 static inline uint32_t convert_steering(int16_t steering) {
     // Clamp input to valid range
-    if (steering < -18000)
-        steering = -18000;
-    if (steering > 18000)
-        steering = 18000;
-    // Map [-18000, 18000] to [4800, 7200]
-    // Center: STEERING_CENTER (steering = 0), Range: ±1200
-    return STEERING_CENTER + ((int32_t)steering * 1200) / 18000;
+    if (steering < STEERING_INPUT_MIN)
+        steering = STEERING_INPUT_MIN;
+    if (steering > STEERING_INPUT_MAX)
+        steering = STEERING_INPUT_MAX;
+
+    // Center: STEERING_CENTER (steering = 0), Range: ±STEERING_OUTPUT_DELTA
+    return STEERING_CENTER + ((int32_t)steering * STEERING_OUTPUT_DELTA) / STEERING_INPUT_MAX;
 }
 
 #endif
