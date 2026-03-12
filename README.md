@@ -5,6 +5,7 @@
 [![X Follow](https://img.shields.io/twitter/follow/simcity99)](https://x.com/simcity99)
 [![Waitlist](https://img.shields.io/badge/waitlist-vapor.autos-blue)](https://vapor.autos)
 [![GitHub](https://img.shields.io/badge/github-vapor--autos%2Fecu-black)](https://github.com/vapor-autos/ecu)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-2ea44f?logo=githubpages&logoColor=white)](https://vapor-autos.github.io/ecu/)
 
 ## Demo
 
