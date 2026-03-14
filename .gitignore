@@ -19,3 +19,22 @@ board/obj/
 *venv*
 certs/*
 
+# KiCad / PCB generated and local-only files
+pcb/*.kicad_prl
+pcb/fp-info-cache
+pcb/*-backups/
+pcb/_autosave-*
+pcb/*.kicad_sch-bak
+pcb/*.fcbak
+pcb/*.FCBak
+
+# PCB manufacturing/export outputs (excluded from source commit)
+pcb/**/*.gbr
+pcb/**/*.drl
+pcb/**/*.gbrjob
+pcb/**/*.pos
+pcb/**/*.d356
+pcb/**/*.rpt
+pcb/**/*.xml
+pcb/**/*.csv
+pcb/**/*.net
